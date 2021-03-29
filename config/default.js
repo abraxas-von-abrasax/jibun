@@ -5,7 +5,8 @@ module.exports = {
         port: process.env.PORT ?? 4200,
     },
     crypto: {
-        saltRounds: process.env.CRYPTO_SALT_ROUNDS ?? 10,
+		saltRounds: process.env.CRYPTO_SALT_ROUNDS ?? 10,
+		jwtSecret: process.env.JWT_SECRET,
     },
     db: {
         user: process.env.PGUSER,

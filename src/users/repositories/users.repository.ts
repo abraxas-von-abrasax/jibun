@@ -2,49 +2,46 @@ import sql from 'sql-template-strings';
 import { query } from '../../storage';
 import { User } from '../typings';
 
-async function findByEmail(email: string): Promise<User | null> {
-    const { rows: users } = await query(sql`
-        select  id          as "id",
-                created_at  as "createdAt",
-                updated_at  as "updatedAt",
-                email       as "email",
-                pwd_hash    as "pwdHash"
-        from    jibun_users
-        where   email = ${email};
-    `);
-    return users?.[0] ?? null;
-}
-
-async function save(data: Partial<User>): Promise<User> {
-    if (data.id) {
-        const stored = await find(data.id);
-
-        if (stored) {
-            return update(data.id, data);
-        }
-    }
-
-    if (!checkIntegrity) {
-        throw new Error(`Invalid user object: ${data}`);
-    }
-
-    const { rows: saved } = await query(sql`
-        insert into jibun_users (updated_at, email, pwd_hash)
-        values      (${new Date().toISOString()}, ${data.email}, ${data.pwdHash})
-        returning   id          as "id",
+export namespace UsersRepository {
+    export async function findByEmail(email: string): Promise<User | null> {
+        const { rows: users } = await query(sql`
+            select  id          as "id",
                     created_at  as "createdAt",
                     updated_at  as "updatedAt",
                     email       as "email",
-                    pwd_hash    as "pwdHash";
-    `);
+                    pwd_hash    as "pwdHash"
+            from    jibun_users
+            where   email = ${email};
+        `);
+        return users?.[0] ?? null;
+    }
 
-    return saved?.[0]!;
+    export async function save(data: Partial<User>): Promise<User> {
+        if (data.id) {
+            const stored = await find(data.id);
+
+            if (stored) {
+                return update(data.id, data);
+            }
+        }
+
+        if (!checkIntegrity) {
+            throw new Error(`Invalid user object: ${data}`);
+        }
+
+        const { rows: saved } = await query(sql`
+            insert into jibun_users (updated_at, email, pwd_hash)
+            values      (${new Date().toISOString()}, ${data.email}, ${data.pwdHash})
+            returning   id          as "id",
+                        created_at  as "createdAt",
+                        updated_at  as "updatedAt",
+                        email       as "email",
+                        pwd_hash    as "pwdHash";
+        `);
+
+        return saved?.[0]!;
+    }
 }
-
-export const UsersRepository = {
-    findByEmail,
-    save,
-};
 
 function checkIntegrity(data: Partial<User>): boolean {
     return !!data.email && !!data.pwdHash;

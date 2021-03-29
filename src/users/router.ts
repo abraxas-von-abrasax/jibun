@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import * as authController from './controllers/auth.controller';
+import { authController } from './controllers';
 
 export const router = Router();
 
 router.post('/jibun/api/auth', authController.register);
+router.post('/jibun/api/sign-in', authController.signIn);

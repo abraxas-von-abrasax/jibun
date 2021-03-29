@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
+import { AuthService } from '../services';
 
 export const register = async (request: Request, response: Response): Promise<Response> => {
     const { email, pwd } = request.body;
@@ -13,10 +13,24 @@ export const register = async (request: Request, response: Response): Promise<Re
     }
 
     try {
-        const res = await AuthService.register(email, pwd);
-        return response.send({ ok: true, error: null, result: res });
+        const result = await AuthService.register(email, pwd);
+        return response.send({ ok: true, error: null, result });
     } catch (error) {
-        console.log('CAUGHT ERROR:', error);
         return response.status(400).send({ ok: false, error, result: null });
     }
 }
+
+export const signIn = async (request: Request, response: Response): Promise<Response> => {
+    const { jwt } = request.body;
+
+    if (!jwt) {
+        return response.status(400).send({ ok: false, error: 'No JWT provided.', result: null });
+    }
+
+    try {
+        const result = AuthService.signIn(jwt);
+        return response.send({ ok: true, error: null, result });
+    } catch (error) {
+        return response.status(400).send({ ok: false, error, result: null });
+    }
+};

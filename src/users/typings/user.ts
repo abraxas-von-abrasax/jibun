@@ -5,3 +5,8 @@ export type User = {
     email: string;
     pwdHash: string;
 }
+
+export type UserDto = {
+    id: string;
+    email: string;
+}
