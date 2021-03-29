@@ -1,0 +1,9 @@
+# Libraries and output
+node_modules
+lib
+
+# Environment
+.env
+
+# IDEs
+*.code-workspace
