@@ -6,7 +6,8 @@ module.exports = {
     },
     crypto: {
 		saltRounds: process.env.CRYPTO_SALT_ROUNDS ?? 10,
-		jwtSecret: process.env.JWT_SECRET,
+		jwtKey: process.env.JWT_KEY,
+		jwtPubKey: process.env.JWT_PUB_KEY,
     },
     db: {
         user: process.env.PGUSER,

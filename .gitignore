@@ -7,3 +7,6 @@ lib
 
 # IDEs
 *.code-workspace
+
+# Misc
+keyfiles
