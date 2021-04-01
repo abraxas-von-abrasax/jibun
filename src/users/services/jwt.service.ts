@@ -1,9 +1,8 @@
 import { sign, verify } from 'jsonwebtoken';
 import config from 'config';
 
-export function createJwt<T extends object>(data: T): string {
-    const inOneHour = Math.floor(Date.now() / 1000) + 60 * 60;
-    return sign(data, config.get('crypto.jwtSecret'), { expiresIn: inOneHour });
+export function createJwt<T extends object>(data: T, expiresIn: number | string): string {
+    return sign(data, config.get('crypto.jwtSecret'), { expiresIn });
 }
 
 export function verifyJwt<T extends object>(token: string): T {

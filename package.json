@@ -7,7 +7,7 @@
         "start": "nodemon -e ts",
         "dev": "npm run compile && node --inspect=9229 lib/main.js",
         "compile": "tsc",
-        "migrate": "node-pg-migrate"
+        "migrate": "node-pg-migrate -t jibun_migrations"
     },
     "repository": {
         "type": "git",
