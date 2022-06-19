@@ -1,32 +1,28 @@
 import { UserStoreFactory } from '../../users';
 import { builtinResources } from '../constants/builtin-resources';
-import { StoreType } from '../types';
+import { CannotFindStoreError, ResourceNotRegisteredError } from '../errors';
 import { Store } from '../types/store';
 
 type State = {
     initialized: boolean;
-    storeType: StoreType | null;
     stores: Map<string, Store<unknown>>;
 };
 
 const state: State = {
     initialized: false,
-    storeType: null,
     stores: new Map(),
 };
 
 export namespace StoreManager {
-    export function initialize(type: StoreType) {
+    export function initialize() {
         if (state.initialized) {
             return;
         }
 
-        state.storeType = type;
-
         for (const resource of builtinResources) {
             switch (resource) {
                 case 'users':
-                    state.stores.set('users', UserStoreFactory.getStore(type));
+                    state.stores.set('users', UserStoreFactory.getStore());
             }
         }
 
@@ -34,10 +30,20 @@ export namespace StoreManager {
     }
 
     export function getStore<T = unknown>(resource: string): Store<T> {
-        return state.stores.get(resource) as Store<T>;
-    }
+        if (!isResourceRegistered(resource)) {
+            throw new ResourceNotRegisteredError(resource);
+        }
 
-    export function getStoreType() {
-        return state.storeType;
+        const store = state.stores.get(resource) as Store<T> | undefined;
+
+        if (!store) {
+            throw new CannotFindStoreError(resource);
+        }
+
+        return store;
     }
+}
+
+function isResourceRegistered(resource: string): boolean {
+    return state.stores.has(resource);
 }

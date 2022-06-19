@@ -22,11 +22,7 @@ export class UserInMemoryStore implements UserStore {
         return this._users.get(id) ?? null;
     }
 
-    async save(user: User): Promise<boolean> {
-        if (!user.check()) {
-            return false;
-        }
+    async save(user: User): Promise<void> {
         this._users.set(user.id, user);
-        return true;
     }
 }

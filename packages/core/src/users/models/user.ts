@@ -1,21 +1,15 @@
-import { PropertyMap, MandatoryPropertySet, PropertyKey, PropertyValue } from './property';
 import * as crypto from 'crypto';
+import { PropertyKey, PropertyMap, PropertyValue } from './property';
 
 export type UserID = string;
 
 export class User {
     private readonly _id: UserID;
-    private readonly _mandatoryProperties: MandatoryPropertySet;
     private readonly _properties: PropertyMap;
 
-    constructor(mandatoryProperties?: PropertyKey[]) {
+    constructor() {
         this._id = crypto.randomUUID();
-        this._mandatoryProperties = new Set();
         this._properties = new Map();
-
-        if (mandatoryProperties) {
-            mandatoryProperties.forEach(property => this._mandatoryProperties.add(property));
-        }
     }
 
     get id(): UserID {
@@ -28,14 +22,5 @@ export class User {
 
     get properties(): PropertyMap {
         return this._properties;
-    }
-
-    check(): boolean {
-        for (const propKey of this._mandatoryProperties) {
-            if (!this._properties.has(propKey)) {
-                return false;
-            }
-        }
-        return true;
     }
 }

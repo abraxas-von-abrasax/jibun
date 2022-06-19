@@ -1,5 +1,5 @@
-import { StoreManager, StoreType } from '../../store';
+import { StoreManager } from '../../store';
 
-export function initializeJibun(storeType: StoreType) {
-    StoreManager.initialize(storeType);
+export function initializeJibun() {
+    StoreManager.initialize();
 }
