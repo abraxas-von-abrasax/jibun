@@ -1,0 +1,44 @@
+{
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "examples/runner/src",
+    "projectType": "application",
+    "targets": {
+        "build": {
+            "executor": "@nrwl/js:tsc",
+            "outputs": ["{options.outputPath}"],
+            "options": {
+                "outputPath": "dist/examples/runner",
+                "tsConfig": "examples/runner/tsconfig.app.json",
+                "packageJson": "examples/runner/package.json",
+                "main": "examples/runner/src/main.ts",
+                "assets": ["examples/runner/*.md"],
+                "buildableProjectDepsInPackageJsonType": "dependencies"
+            },
+            "dependsOn": ["^build"]
+        },
+        "serve": {
+            "executor": "@nrwl/node:node",
+            "options": {
+                "buildTarget": "runner:build",
+                "watch": false
+            },
+            "dependsOn": ["build"]
+        },
+        "lint": {
+            "executor": "@nrwl/linter:eslint",
+            "outputs": ["{options.outputFile}"],
+            "options": {
+                "lintFilePatterns": ["examples/runner/**/*.ts"]
+            }
+        },
+        "test": {
+            "executor": "@nrwl/jest:jest",
+            "outputs": ["coverage/examples/runner"],
+            "options": {
+                "jestConfig": "examples/runner/jest.config.ts",
+                "passWithNoTests": true
+            }
+        }
+    },
+    "tags": []
+}

@@ -1,0 +1,9 @@
+{
+    "name": "@jibun/runner",
+    "version": "0.0.1",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "main": "dist/main.js"
+}

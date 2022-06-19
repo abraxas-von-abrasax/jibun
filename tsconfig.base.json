@@ -1,0 +1,30 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "module": "CommonJS",
+        "target": "ES6",
+        "sourceMap": true,
+        "declaration": true,
+        "moduleResolution": "Node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "esModuleInterop": true,
+        "baseUrl": ".",
+        "paths": {
+            "@jibun/core": ["packages/core/src/index.ts"],
+            "@jibun/runner": ["examples/runner/src/main.ts"]
+        }
+    },
+    "exclude": [
+        "node_modules",
+        "*/**/node_modules",
+        "dist",
+        "*/**/dist",
+        "jest.config.ts",
+        "*/**/jest.config.ts",
+        "*/**/*.spec.ts",
+        "*/**/*.test.ts",
+        "tmp",
+        "*/**/tmp"
+    ]
+}
