@@ -12,6 +12,10 @@ async function main() {
     const user = new User();
     console.log('Created new user ::', user);
 
+    user.setProperty('firstName', 'Abraxas');
+    user.setProperty('lastName', 'von Abrasax');
+    user.setProperty('age', 365);
+
     await store.save(user);
 
     const stored = await store.get(user.id);
