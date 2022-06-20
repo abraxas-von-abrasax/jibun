@@ -1,8 +1,9 @@
+import { Store } from '../../store';
+import { User } from '../models';
 import { UserInMemoryStore } from './user-in-memory-store';
-import { UserStore } from './user-store';
 
 export class UserStoreFactory {
-    static getStore(): UserStore {
+    static getStore(): Store<User> {
         return UserInMemoryStore.getInstance();
     }
 }

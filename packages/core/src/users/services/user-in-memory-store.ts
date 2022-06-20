@@ -1,10 +1,11 @@
-import { User, UserID } from '../models';
-import { UserStore } from './user-store';
+import { Store } from '../../store';
+import { IDTools } from '../../utils';
+import { User } from '../models';
 
-type UserMap = Map<UserID, User>;
+type UserMap = Map<IDTools.ID, User>;
 
-export class UserInMemoryStore implements UserStore {
-    private static instance: UserInMemoryStore;
+export class UserInMemoryStore implements Store<User> {
+    private static _instance: UserInMemoryStore;
     private _users: UserMap;
 
     private constructor() {
@@ -12,17 +13,18 @@ export class UserInMemoryStore implements UserStore {
     }
 
     static getInstance() {
-        if (!UserInMemoryStore.instance) {
-            UserInMemoryStore.instance = new UserInMemoryStore();
+        if (!UserInMemoryStore._instance) {
+            UserInMemoryStore._instance = new UserInMemoryStore();
         }
-        return UserInMemoryStore.instance;
+        return UserInMemoryStore._instance;
     }
 
-    async get(id: UserID): Promise<User | null> {
+    async get(id: IDTools.ID): Promise<User | null> {
         return this._users.get(id) ?? null;
     }
 
     async save(user: User): Promise<void> {
+        // TODO: check if user is valid before storing
         this._users.set(user.id, user);
     }
 }

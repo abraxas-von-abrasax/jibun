@@ -1,5 +1,7 @@
-import { StoreManager } from '../../store';
+import { GroupModule } from '../../groups';
+import { StoreModule } from '../../store';
 
 export function initializeJibun() {
-    StoreManager.initialize();
+    StoreModule.initialize();
+    GroupModule.initialize();
 }
