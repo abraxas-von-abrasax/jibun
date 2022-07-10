@@ -2,16 +2,20 @@ import { Group, GroupManager } from '../../groups';
 import { PropertyKey, PropertyMap, PropertyValue } from '../../properties';
 import { IDTools } from '../../utils';
 import { CannotAddUserToGroupError } from '../errors';
+import { UserManager } from '../services';
+import { UserStore } from '../types';
 
 export class User {
+    private static _store: UserStore;
+
     private readonly _id: IDTools.ID;
     private readonly _properties: PropertyMap;
     private _group: Group;
 
-    constructor() {
+    constructor(group?: Group) {
         this._id = IDTools.generateID();
         this._properties = new Map();
-        this._group = GroupManager.getGlobalGroup();
+        this._group = group ?? GroupManager.getGlobalGroup();
     }
 
     get id(): IDTools.ID {
@@ -54,5 +58,21 @@ export class User {
         }
 
         this._group = group;
+    }
+
+    async save(): Promise<User> {
+        await User._getStore().save(this);
+        return this;
+    }
+
+    static async get(id: string): Promise<User | null> {
+        return User._getStore().get(id);
+    }
+
+    private static _getStore(): UserStore {
+        if (!User._store) {
+            User._store = UserManager.getStore();
+        }
+        return User._store;
     }
 }

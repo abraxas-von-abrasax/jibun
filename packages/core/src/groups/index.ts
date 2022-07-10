@@ -6,7 +6,7 @@ export * from './services';
 export * from './types';
 
 export namespace GroupModule {
-    export function initialize(): void {
-        GroupManager.initialize();
+    export async function initialize(): Promise<void> {
+        await GroupManager.initialize();
     }
 }

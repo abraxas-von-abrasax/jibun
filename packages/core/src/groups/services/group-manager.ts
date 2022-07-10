@@ -3,6 +3,7 @@ import { Store } from '../../store';
 import { ROOT_GROUP_ID } from '../constants';
 import { Group } from '../models';
 import { GroupStoreFactory } from './group-store-factory';
+import { GroupCreateOptions } from '../types';
 
 const state: UninitializedState | InitializedState = {
     initialized: false,
@@ -11,7 +12,7 @@ const state: UninitializedState | InitializedState = {
 };
 
 export namespace GroupManager {
-    export function initialize(): void {
+    export async function initialize(): Promise<void> {
         if (state.initialized) {
             return;
         }
@@ -19,18 +20,18 @@ export namespace GroupManager {
         state.store = GroupStoreFactory.getStore();
 
         const rootGroup = new Group(ROOT_GROUP_ID);
-        state.store.save(rootGroup);
+        await state.store.save(rootGroup);
         state.globalGroup = rootGroup;
         // TODO: Rework typing here
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (state as any).initialized = true;
     }
 
-    export async function getGroup(groupID: string): Promise<Group | null> {
+    export async function getGroup(id: string): Promise<Group | null> {
         if (!state.initialized) {
             return null;
         }
-        const group = await state.store.get(groupID);
+        const group = await state.store.get(id);
         return group ?? null;
     }
 
@@ -42,9 +43,7 @@ export namespace GroupManager {
         return state.globalGroup;
     }
 
-    export function setGlobalMandatoryProperties(
-        properties: PropertyKey[]
-    ): void {
+    export function setGlobalMandatoryProperties(properties: PropertyKey[]): void {
         if (!state.initialized) {
             return;
         }
@@ -52,6 +51,23 @@ export namespace GroupManager {
         for (const property of properties) {
             state.globalGroup.addMandatoryField(property);
         }
+    }
+
+    export async function createGroup(id: string, options?: GroupCreateOptions): Promise<Group> {
+        const existing = await getGroup(id);
+
+        if (existing) {
+            return existing;
+        }
+
+        if (!state.initialized) {
+            throw new Error('The groups store has not been initialized.');
+        }
+
+        const newGroup = new Group(id, options);
+        await state.store.save(newGroup);
+
+        return newGroup;
     }
 }
 

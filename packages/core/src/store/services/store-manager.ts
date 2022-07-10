@@ -1,11 +1,11 @@
 import { UserStoreFactory } from '../../users';
 import { builtinResources } from '../constants/builtin-resources';
 import { CannotFindStoreError, ResourceNotRegisteredError } from '../errors';
-import { Store } from '../types/store';
+import { Store } from '../types';
 
 type State = {
     initialized: boolean;
-    stores: Map<string, Store<unknown>>;
+    stores: Map<string, Store>;
 };
 
 const state: State = {

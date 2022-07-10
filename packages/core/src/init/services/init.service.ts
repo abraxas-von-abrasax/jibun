@@ -1,7 +1,7 @@
 import { GroupModule } from '../../groups';
 import { StoreModule } from '../../store';
 
-export function initializeJibun() {
+export async function initializeJibun(): Promise<void> {
     StoreModule.initialize();
-    GroupModule.initialize();
+    await GroupModule.initialize();
 }

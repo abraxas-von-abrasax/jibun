@@ -24,7 +24,10 @@ export class UserInMemoryStore implements Store<User> {
     }
 
     async save(user: User): Promise<void> {
-        // TODO: check if user is valid before storing
+        if (!user.check()) {
+            console.debug(`Trying to save invalid user '${user.id}'. Will not save.`);
+            return;
+        }
         this._users.set(user.id, user);
     }
 }
