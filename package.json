@@ -8,10 +8,11 @@
         "examples/**"
     ],
     "scripts": {
-        "start": "yarn build && yarn start:runner",
-        "build": "yarn workspaces run build",
-        "start:runner": "yarn workspace @jibun/runner start",
-        "lint": "yarn workspaces run lint"
+        "start": "yarn start:runner",
+        "build:core": "nx build core",
+        "build:all": "nx run-many --target=build --all",
+        "start:runner": "nx serve runner",
+        "lint:all": "nx run-many --target=lint --all"
     },
     "devDependencies": {
         "@nrwl/cli": "14.3.6",
