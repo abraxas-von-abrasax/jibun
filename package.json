@@ -15,13 +15,13 @@
         "lint:all": "nx run-many --target=lint --all"
     },
     "devDependencies": {
-        "@nrwl/cli": "14.3.6",
-        "@nrwl/eslint-plugin-nx": "14.3.6",
-        "@nrwl/jest": "14.3.6",
-        "@nrwl/js": "^14.3.6",
-        "@nrwl/linter": "14.3.6",
-        "@nrwl/node": "^14.3.6",
-        "@nrwl/workspace": "14.3.6",
+        "@nrwl/cli": "14.4.2",
+        "@nrwl/eslint-plugin-nx": "14.4.2",
+        "@nrwl/jest": "14.4.2",
+        "@nrwl/js": "14.4.2",
+        "@nrwl/linter": "14.4.2",
+        "@nrwl/node": "14.4.2",
+        "@nrwl/workspace": "14.4.2",
         "@types/jest": "28.1.2",
         "@types/node": "18.0.0",
         "@typescript-eslint/eslint-plugin": "~5.24.0",
@@ -29,7 +29,7 @@
         "eslint": "~8.18.0",
         "eslint-config-prettier": "8.5.0",
         "jest": "28.1.1",
-        "nx": "14.3.6",
+        "nx": "14.4.2",
         "prettier": "^2.7.1",
         "rimraf": "^3.0.2",
         "ts-jest": "28.0.5",
@@ -37,3 +37,4 @@
     },
     "dependencies": {}
 }
+
