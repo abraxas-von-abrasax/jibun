@@ -1,1 +1,1 @@
-export const builtinResources = ['users'];
+export const builtinResources = ['users', 'groups'];

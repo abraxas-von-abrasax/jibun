@@ -1,13 +1,11 @@
 import { PropertyKey } from '../../properties';
-import { Store } from '../../store';
+import { StoreManager } from '../../store';
 import { ROOT_GROUP_ID } from '../constants';
 import { Group } from '../models';
-import { GroupStoreFactory } from './group-store-factory';
 import { GroupCreateOptions } from '../types';
 
 const state: UninitializedState | InitializedState = {
     initialized: false,
-    store: null,
     globalGroup: null,
 };
 
@@ -17,10 +15,10 @@ export namespace GroupManager {
             return;
         }
 
-        state.store = GroupStoreFactory.getStore();
+        const store = StoreManager.getStore<Group>('groups');
 
         const rootGroup = new Group(ROOT_GROUP_ID);
-        await state.store.save(rootGroup);
+        await store.save(rootGroup);
         state.globalGroup = rootGroup;
         // TODO: Rework typing here
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -31,7 +29,9 @@ export namespace GroupManager {
         if (!state.initialized) {
             return null;
         }
-        const group = await state.store.get(id);
+
+        const store = StoreManager.getStore<Group>('groups');
+        const group = await store.get(id);
         return group ?? null;
     }
 
@@ -64,8 +64,10 @@ export namespace GroupManager {
             throw new Error('The groups store has not been initialized.');
         }
 
+        const store = StoreManager.getStore<Group>('groups');
+
         const newGroup = new Group(id, options);
-        await state.store.save(newGroup);
+        await store.save(newGroup);
 
         return newGroup;
     }
@@ -73,18 +75,15 @@ export namespace GroupManager {
 
 type State = {
     initialized: boolean;
-    store: Store<Group> | null;
     globalGroup: Group | null;
 };
 
 interface UninitializedState {
     initialized: false;
-    store: Store<Group> | null;
     globalGroup: Group | null;
 }
 
 interface InitializedState extends State {
     initialized: true;
-    store: Store<Group>;
     globalGroup: Group;
 }

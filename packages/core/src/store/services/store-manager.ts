@@ -2,6 +2,7 @@ import { UserStoreFactory } from '../../users';
 import { builtinResources } from '../constants/builtin-resources';
 import { CannotFindStoreError, ResourceNotRegisteredError } from '../errors';
 import { Store } from '../types';
+import { GroupStoreFactory } from '../../groups';
 
 type State = {
     initialized: boolean;
@@ -23,6 +24,9 @@ export namespace StoreManager {
             switch (resource) {
                 case 'users':
                     state.stores.set('users', UserStoreFactory.getStore());
+                    break;
+                case 'groups':
+                    state.stores.set('groups', GroupStoreFactory.getStore());
             }
         }
 
